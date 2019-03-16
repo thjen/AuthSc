@@ -9,7 +9,7 @@ export default class Login1 extends React.Component {
     super(props);
     this.state={
       fadeValue: new Animated.Value(0),
-      xValue: new Animated.Value(100),
+      xValue: new Animated.Value(-(width - 150)),
       yValue: new Animated.Value(-100),
       fadeValue: new Animated.Value(0),
       springValue: new Animated.Value(0.7),
