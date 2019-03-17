@@ -4,11 +4,10 @@ import {View, Text, Container, Content, Item, Button, Input, Thumbnail, Card, Ca
 import {Ionicons} from '@expo/vector-icons';
 
 const {width, height} = Dimensions.get('window');
-export default class Login extends React.Component {
+export default class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-      fadeValue: new Animated.Value(0),
       yValue: {
           logo: new Animated.Value(-200),
           login: new Animated.Value(-100),
@@ -16,21 +15,16 @@ export default class Login extends React.Component {
       xValue: {
         email: new Animated.Value(-width),
         password: new Animated.Value(-width),
+        gender: new Animated.Value(-width),
+        birthday: new Animated.Value(-width),
+        phone: new Animated.Value(-width),
         button: new Animated.Value(-width),
-      },
-      springValue: new Animated.Value(0.8),
+      }
     };
   }
 
   componentDidMount() {
     this.transformAnim();
-  }
-
-  springValue = () => {
-    Animated.spring(this.state.springValue, {
-      toValue: 1,
-      friction: 1,
-    }).start();
   }
 
   animConfig = (toValue, duration, easing) => {
@@ -42,23 +36,13 @@ export default class Login extends React.Component {
   }
 
   transformAnim = () => {
-    const anims = [
-      {
-        value: this.state.xValue.email,
-        properties: this.animConfig(0, 300, Easing.cubic) 
-      }, {
-        value: this.state.xValue.password,
-        properties: this.animConfig(0, 300, Easing.cubic) 
-      }, {
-        value: this.state.xValue.button,
-        properties: this.animConfig(0, 300, Easing.cubic) 
-      }
-    ];
-    Animated.timing(this.state.yValue.logo, this.animConfig(0, 900, Easing.cubic)).start(() => this.springValue());
-    Animated.timing(this.state.yValue.login, this.animConfig(0, 900, Easing.cubic)).start();
+    const {email, password, gender, phone, birthday, button} = this.state.xValue;
+    const anims = [email, password, phone, gender, birthday, button];
+    Animated.timing(this.state.yValue.logo, this.animConfig(0, 600, Easing.cubic)).start();
+    Animated.timing(this.state.yValue.login, this.animConfig(0, 600, Easing.cubic)).start();
     Animated.sequence(
-      anims.map((element, index) => 
-        Animated.timing(element.value, element.properties)
+      anims.map(el => 
+        Animated.timing(el, this.animConfig(0, 100, Easing.cubic)),
       )
     ).start();
   }
@@ -67,7 +51,7 @@ export default class Login extends React.Component {
     return (
       <Container>
         <Content contentContainerStyle={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Animated.Image source={require("../assets/logo.png")} style={[{width: 200, height: 200}, {top: this.state.yValue.logo}, {transform: [{scale: this.state.springValue}], alignSelf: 'center'}]}/>
+          <Animated.View style={[{top: this.state.yValue.logo}, {marginBottom: 70}]}><Text style={{fontSize: 25, fontWeight: 'bold', color: "#d9534f"}}>Create account</Text></Animated.View>
           <Animated.View style={[{width: '100%',}, {left: this.state.xValue.email}]}>
             <Item style={{borderColor: "#D9534F", paddingHorizontal: 15, marginLeft: 15, marginRight: 15, marginTop: 15}} rounded>
               <Ionicons name='ios-person' size={25} />
@@ -80,16 +64,34 @@ export default class Login extends React.Component {
               <Input placeholder=' Password: '/>
             </Item>
           </Animated.View>
-          <Animated.View style={[{width: '100%',}, {left: this.state.xValue.button}]}>
+          <Animated.View style={[{width: '100%',}, {left: this.state.xValue.phone}]}>
+            <Item style={{borderColor: "#D9534F", paddingHorizontal: 15, marginLeft: 15, marginRight: 15,marginTop: 15}} rounded>
+              <Ionicons name='ios-phone-portrait' size={25} />
+              <Input placeholder=' Phone number: '/>
+            </Item>
+          </Animated.View>
+          <Animated.View style={[{width: '100%',}, {right: this.state.xValue.gender}]}>
+            <Item style={{borderColor: "#D9534F", paddingHorizontal: 15, marginLeft: 15, marginRight: 15,marginTop: 15}} rounded>
+              <Ionicons name='ios-transgender' size={25} />
+              <Input placeholder=' Gender: '/>
+            </Item>
+          </Animated.View>
+          <Animated.View style={[{width: '100%',}, {left: this.state.xValue.birthday}]}>
+            <Item style={{borderColor: "#D9534F", paddingHorizontal: 15, marginLeft: 15, marginRight: 15,marginTop: 15}} rounded>
+              <Ionicons name='ios-gift' size={25} />
+              <Input placeholder=' Birthday: '/>
+            </Item>
+          </Animated.View>
+          <Animated.View style={[{width: '100%',}, {right: this.state.xValue.button}]}>
             <Button full danger rounded style={{marginTop: 15, marginHorizontal: 15}}>
               <Text>Sign in</Text>
             </Button>
           </Animated.View>
         </Content>
         <Animated.View style={[{marginBottom: 25, alignItems: 'center', justifyContent: 'center'}, {bottom: this.state.yValue.login}]}>
-          <Text>Don't have an account?</Text>
+          <Text>Have you an account?</Text>
           <Button transparent danger full>
-            <Text>Create one</Text>
+            <Text>Login</Text>
           </Button>
         </Animated.View> 
       </Container>
